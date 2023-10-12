@@ -28,6 +28,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.querydsl:querydsl-jpa:5.0.0'
+	annotationProcessor 'com.querydsl:querydsl-apt:5.0.0'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	runtimeOnly 'com.h2database:h2'
@@ -56,7 +58,7 @@ sourceSets {
 configurations {
 	querydsl.extendsFrom compileClasspath
 }
-complieQuerydsl {
+compileQuerydsl {
 	options.annotationProcessorPath = configurations.querydsl
 }
 //tasks.named('test') {
