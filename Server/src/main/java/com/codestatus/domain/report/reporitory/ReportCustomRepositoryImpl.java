@@ -1,7 +1,6 @@
 package com.codestatus.domain.report.reporitory;
 
 import com.codestatus.domain.feed.entity.Feed;
-import com.codestatus.domain.report.entity.ReportFeed;
 import com.codestatus.domain.user.entity.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
