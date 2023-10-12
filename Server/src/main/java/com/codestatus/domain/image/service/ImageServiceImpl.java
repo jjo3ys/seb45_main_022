@@ -1,6 +1,6 @@
 package com.codestatus.domain.image.service;
 
-import com.codestatus.global.aws.FileStorageService;
+import com.codestatus.module.aws.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

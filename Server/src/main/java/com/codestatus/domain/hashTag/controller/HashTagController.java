@@ -3,7 +3,7 @@ package com.codestatus.domain.hashTag.controller;
 import com.codestatus.domain.hashTag.entity.HashTag;
 import com.codestatus.domain.hashTag.mapper.HashTagMapper;
 import com.codestatus.domain.hashTag.service.HashTagService;
-import com.codestatus.global.dto.MultiResponseDto;
+import com.codestatus.domain.utils.dto.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

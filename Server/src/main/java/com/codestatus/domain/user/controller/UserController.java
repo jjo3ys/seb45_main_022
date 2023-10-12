@@ -4,7 +4,7 @@ import com.codestatus.domain.user.dto.UserDto;
 import com.codestatus.domain.user.entity.User;
 import com.codestatus.domain.user.mapper.UserMapper;
 import com.codestatus.domain.user.service.UserService;
-import com.codestatus.global.auth.dto.PrincipalDto;
+import com.codestatus.auth.dto.PrincipalDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

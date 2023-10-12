@@ -1,7 +1,7 @@
 package com.codestatus.domain.feed.service;
 
 import com.codestatus.domain.feed.entity.Feed;
-import com.codestatus.global.auth.dto.PrincipalDto;
+import com.codestatus.auth.dto.PrincipalDto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

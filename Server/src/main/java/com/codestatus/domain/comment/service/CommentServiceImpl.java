@@ -5,7 +5,7 @@ import com.codestatus.domain.comment.repository.CommentRepository;
 import com.codestatus.domain.feed.command.FeedCommand;
 import com.codestatus.global.exception.BusinessLogicException;
 import com.codestatus.global.exception.ExceptionCode;
-import com.codestatus.global.utils.CheckUser;
+import com.codestatus.domain.utils.user.CheckUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

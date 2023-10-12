@@ -1,7 +1,7 @@
 package com.codestatus.domain.level.command;
 
 import com.codestatus.domain.user.entity.User;
-import com.codestatus.global.exp.repository.ExpTableRepository;
+import com.codestatus.domain.utils.exp.repository.ExpTableRepository;
 import com.codestatus.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
