@@ -27,6 +27,8 @@ public enum ExceptionCode {
     INVALID_FILE_TYPE(400, "이미지 파일만 업로드 가능합니다.", "I001"),
     ALREADY_DEFAULT_IMAGE(400, "이미 기본 프로필 이미지를 사용 중 입니다.", "I002"),
 
+    LIKE_NOT_FOUND(404, "좋아요를 찾을 수 없습니다.", "L000"),
+
     FILE_NOT_FOUND(404, "파일을 찾을 수 없습니다.", "f000"),
     FILE_TOO_LARGE(400, "파일 크기는 5MB를 넘을 수 없습니다.", "f001"),
 

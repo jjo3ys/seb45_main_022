@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RequestMapping("/feed/like")
@@ -18,9 +15,16 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping("/{feedId}")
-    public ResponseEntity likeOrDislikeFeed(@PathVariable("feedId") long feedId,
+    public ResponseEntity likeFeed(@PathVariable("feedId") long feedId,
                                             @AuthenticationPrincipal PrincipalDto principal) {
-        likeService.feedLikeOrDisLike(feedId, principal.getId());
+        likeService.likeFeed(feedId, principal.getId());
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @DeleteMapping("/{feedId}")
+    public ResponseEntity dislikeFeed(@PathVariable("feedId") long feedId,
+                                            @AuthenticationPrincipal PrincipalDto principal) {
+        likeService.disLikeFeed(feedId, principal.getId());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
