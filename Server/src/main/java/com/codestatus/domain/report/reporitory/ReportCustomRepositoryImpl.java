@@ -7,8 +7,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 import static com.codestatus.domain.report.entity.QReportFeed.reportFeed;
 
 @RequiredArgsConstructor
