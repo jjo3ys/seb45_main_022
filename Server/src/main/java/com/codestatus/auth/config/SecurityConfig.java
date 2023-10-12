@@ -8,7 +8,6 @@ import com.codestatus.auth.utils.JwtResponseUtil;
 import com.codestatus.domain.user.service.UserService;
 import com.codestatus.auth.filter.JwtAuthenticationFilter;
 import com.codestatus.auth.filter.JwtVerificationFilter;
-import com.codestatus.global.auth.handler.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
