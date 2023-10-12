@@ -30,8 +30,7 @@ public class ReportFeedServiceImpl implements ReportService<Feed>{
     public void report(Feed targetFeed, User user) {
         targetFeed = feedCommand.findVerifiedFeed(targetFeed.getFeedId());
 
-        Optional<ReportFeed> optionalReportFeed = reportFeedRepository.findByFeedAndUser(targetFeed, user);
-        if (optionalReportFeed.isPresent()) throw new BusinessLogicException(ExceptionCode.DUPLICATE_REPORT_EXCEPTION);
+        if(reportFeedRepository.existsByFeedAndUser(targetFeed, user)) throw new BusinessLogicException(ExceptionCode.DUPLICATE_REPORT_EXCEPTION);
 
         ReportFeed reportFeed = new ReportFeed();
         reportFeed.setFeed(targetFeed);
