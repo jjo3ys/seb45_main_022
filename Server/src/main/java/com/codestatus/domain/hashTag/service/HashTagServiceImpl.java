@@ -56,7 +56,7 @@ public class HashTagServiceImpl implements HashTagService {
     //createEntityByString에서 쓰는 메서드
     //String을 받아 해시태그 검색해보고 있으면 있는거 반환, 없으면 만들어서 반환.
     private HashTag findOrCreateHashTag(String hashTagStr) {
-        Optional<HashTag> optionalHashTag = Optional.ofNullable(findByString(hashTagStr));
+        Optional<HashTag> optionalHashTag = hashTagRepository.findHashTagByBody(hashTagStr);
 
         if (optionalHashTag.isPresent()) {
             return optionalHashTag.get(); // 이미 존재하는 해시태그 반환
@@ -68,12 +68,6 @@ public class HashTagServiceImpl implements HashTagService {
             hashTagRepository.save(newHashTag); // 새로운 해시태그 저장
             return newHashTag;
         }
-    }
-
-    private HashTag findByString(String hashTag) {
-        Optional<HashTag> optionalHashTag = hashTagRepository.findHashTagByBody(hashTag);
-
-        return optionalHashTag.orElse(null);
     }
 }
 

@@ -2,6 +2,8 @@ package com.codestatus.domain.hashTag.command;
 
 import com.codestatus.domain.hashTag.entity.FeedHashTag;
 import com.codestatus.domain.hashTag.repository.FeedHashTagRepository;
+import com.codestatus.domain.user.entity.User;
+import com.codestatus.domain.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,6 +15,7 @@ import java.util.List;
 @Transactional
 @Component
 public class FeedHashTagCommand {
+    private final UserMapper userMapper;
     private final FeedHashTagRepository feedHashTagRepository;
 
     public void createFeedHashtags(List<FeedHashTag> feedHashTags){
@@ -25,7 +28,8 @@ public class FeedHashTagCommand {
     }
 
     public void deleteFeedHashtagAll(long userId) {
-        List<FeedHashTag> feedHashTagList = feedHashTagRepository.findAllByFeed_User_UserId(userId);
+        User user = userMapper.userIdToUser(userId);
+        List<FeedHashTag> feedHashTagList = feedHashTagRepository.findAllByFeedUser(user);
         deleteFeedHashtagAll(feedHashTagList);
     }
 
