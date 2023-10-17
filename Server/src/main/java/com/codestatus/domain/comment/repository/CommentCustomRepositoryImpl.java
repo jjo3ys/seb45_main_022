@@ -15,6 +15,7 @@ import java.util.Optional;
 
 import static com.codestatus.domain.comment.entity.QComment.comment;
 import static com.codestatus.domain.feed.entity.QFeed.feed;
+import static com.codestatus.domain.user.entity.QUser.user;
 
 @RequiredArgsConstructor
 @Repository
@@ -42,17 +43,21 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository{
 
     @Override
     public Page<Comment> findAllByFeed(long feedId, Pageable pageable) {
-        List<Comment> content = getComments(feedId);
+        List<Comment> content = getComments(feedId, pageable);
         JPAQuery<Long> countQuery = getCount(feedId);
 
         return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchOne());
     }
 
-    private List<Comment> getComments(long feedId) {
+    private List<Comment> getComments(long feedId, Pageable pageable) {
         return jpaQueryFactory
                 .selectFrom(comment)
-                .join(comment)
-                .on(eqFeedId(feedId))
+                .join(comment.feed, feed)
+                .join(comment.user, user).fetchJoin()
+                .join(user.statuses).fetchJoin()
+                .where(eqFeedId(feedId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
     }
 
@@ -60,7 +65,7 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository{
         return jpaQueryFactory
                 .select(comment.count())
                 .from(comment)
-                .join(comment.feed)
+                .join(comment.feed, feed)
                 .on(eqFeedId(feedId));
     }
 
