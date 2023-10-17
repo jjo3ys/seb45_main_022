@@ -24,7 +24,6 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Transactional
 @Service
@@ -60,9 +59,9 @@ public class FeedServiceImpl implements FeedService {
 
     //피드리스트에서 유저가 좋아요한 피드 아이디셋
     @Override
-    public Set<Long> isLikeFeedIds(List<Feed> feeds, PrincipalDto principal) {
+    public List<Long> isLikeFeedIds(List<Feed> feeds, PrincipalDto principal) {
         if(principal == null){
-            return Collections.emptySet();
+            return Collections.emptyList();
         }
         return feedRepository
                 .findFeedsLikedByUserInList(principal.getId(), feeds);
@@ -83,16 +82,16 @@ public class FeedServiceImpl implements FeedService {
     @Transactional(readOnly = true)
     public Page<Feed> findWeeklyBestFeeds(long categoryId, int page, int size) {
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(1);
-        Sort sort = Sort.by(Sort.Direction.DESC, "created_at"); //최신순 정렬
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return feedRepository.findFeedsByCategoryAndCreatedAtAndSortLikes(categoryId, oneWeekAgo, pageable);
+        return feedRepository.findFeedsByCategoryAndCreatedAtAndSortLikes(
+                categoryId, oneWeekAgo,
+                getPageable(page, size));
     }
 
     //(검색기능)텍스트 받아서 해당 카테고리 내에서 해당하는 바디 가지고 있는 피드목록 조회
     @Override
     @Transactional(readOnly = true)
     public Page<Feed> findFeedByBodyAndCategory(long categoryId, String text, int page, int size) {
-        return feedRepository.findAllByCategoryCategoryIdAndBodyContainingAndDeletedIsFalse(
+        return feedRepository.findAllByCategoryIdAndBodyContaining(
                 categoryId, text,
                 getPageable(page, size)
         );
@@ -102,7 +101,7 @@ public class FeedServiceImpl implements FeedService {
     @Override
     @Transactional(readOnly = true)
     public Page<Feed> findFeedByUserAndCategory(long categoryId, String text, int page, int size) {
-        return feedRepository.findByUserAndDeleted(
+        return feedRepository.findAllByUserAndDeleted(
                 categoryId, text,
                 getPageable(page, size)
         );
@@ -112,7 +111,7 @@ public class FeedServiceImpl implements FeedService {
     @Override
     @Transactional(readOnly = true)
     public Page<Feed> findFeedByHashTagAndCategory(long categoryId, long hashTagId, int page, int size) {
-        return feedRepository.findByCategoryCategoryIdAndFeedHashTagsHashTagHashTagId(
+        return feedRepository.findAllByCategoryIdAndHashTagId(
                 categoryId, hashTagId,
                 getPageable(page, size)
         );
@@ -122,7 +121,7 @@ public class FeedServiceImpl implements FeedService {
     @Override
     @Transactional(readOnly = true)
     public Page<Feed> findFeedByHashTagBody(long categoryId, String body, int page, int size) {
-        return feedRepository.findByCategoryCategoryIdAndDeletedIsFalseAndFeedHashTagsHashTagBodyContaining(
+        return feedRepository.findAllByCategoryIdAndHashTagBodyContaining(
                 categoryId, body,
                 getPageable(page, size)
         );
@@ -132,7 +131,7 @@ public class FeedServiceImpl implements FeedService {
     @Override
     @Transactional(readOnly = true)
     public Page<Feed> findAllFeedByDeleted(int page, int size) {
-        return feedRepository.findAllByDeletedIsFalse(
+        return feedRepository.findAll(
                 getPageable(page, size)
         );
     }
@@ -170,7 +169,7 @@ public class FeedServiceImpl implements FeedService {
     @Override
     @Transactional(readOnly = true)
     public Page<Feed> userPost(long userId, int page, int size) {
-        return feedRepository.findAllByUserUserIdAndDeletedIsFalse(
+        return feedRepository.findAllByUserId(
                 userId,
                 getPageable(page, size)
         );

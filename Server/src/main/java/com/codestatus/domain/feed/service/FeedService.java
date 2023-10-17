@@ -21,7 +21,7 @@ public interface FeedService {
     Page<Feed> userPost(long userId, int page, int size);
     void deleteEntity(long feedId, long userId);
     boolean isLikeUser(long feedId, long userId);
-    Set<Long> isLikeFeedIds(List<Feed> feeds, PrincipalDto principal);
+    List<Long> isLikeFeedIds(List<Feed> feeds, PrincipalDto principal);
     Page<Feed> findAllEntity(int page, int size);
     int getStatId(long feedId);
 }

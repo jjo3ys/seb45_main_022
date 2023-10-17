@@ -36,7 +36,7 @@ public interface FeedMapper {
                 .build();
     }
 
-    default List<FeedsResponseDto> feedsToFeedResponseDtos(List<Feed> feeds, Set<Long> feedIds){
+    default List<FeedsResponseDto> feedsToFeedResponseDtos(List<Feed> feeds, List<Long> feedIds){
         return feeds.stream()
                 .map(feed -> FeedsResponseDto
                         .builder()

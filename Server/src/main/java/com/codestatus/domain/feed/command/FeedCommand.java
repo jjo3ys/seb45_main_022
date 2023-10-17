@@ -2,7 +2,6 @@ package com.codestatus.domain.feed.command;
 
 import com.codestatus.domain.feed.entity.Feed;
 import com.codestatus.domain.feed.repository.FeedRepository;
-import com.codestatus.domain.user.entity.User;
 import com.codestatus.global.exception.BusinessLogicException;
 import com.codestatus.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +44,7 @@ public class FeedCommand {
     }
 
     public void deleteFeedAll(long userId) {
-        List<Feed> feedList = feedRepository.findAllByUserUserIdAndDeletedIsFalse(userId);
+        List<Feed> feedList = feedRepository.findAllByUserId(userId);
         feedList.forEach(feed -> feed.setDeleted(true));
         feedRepository.saveAll(feedList);
     }
