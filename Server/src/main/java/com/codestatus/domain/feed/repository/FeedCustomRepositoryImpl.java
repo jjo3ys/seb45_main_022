@@ -274,7 +274,7 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository{
                         eqCategoryId(categoryId),
                         deletedFalse()
                 )
-                .orderBy()
+                .orderBy(feed.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .groupBy(feed.feedId)
@@ -342,7 +342,7 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository{
                         deletedFalse(),
                         likeDeletedFalse()
                 ).groupBy(feed.feedId)
-                .orderBy(like.count().desc())
+                .orderBy(like.count().desc(), feed.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
