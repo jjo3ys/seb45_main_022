@@ -5,3 +5,4 @@ spring:
       hibernate:
         format_sql: true
         generate_statistics: true
+        default_batch_fetch_size: 100
