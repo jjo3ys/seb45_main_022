@@ -1,5 +1,6 @@
 package com.codestatus.domain.feed.controller;
 
+import com.codestatus.domain.feed.dto.FeedDto;
 import com.codestatus.domain.feed.service.FeedService;
 import com.codestatus.domain.hashTag.entity.FeedHashTag;
 import com.codestatus.domain.hashTag.service.HashTagService;
@@ -17,12 +18,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.util.Collections;
 import java.util.List;
 
 @Validated
@@ -83,16 +86,17 @@ public class FeedController {
     }
 
     //선택한 카테고리 내의 피드 전체 조회
+//    @Transactional(readOnly = true)
     @GetMapping("/get/{categoryId}")
     public ResponseEntity getFeedsByCategory(@PathVariable @Min(0) @Max(13) long categoryId, @RequestParam int page, @RequestParam int size,
                                              @AuthenticationPrincipal PrincipalDto principal) {
-        Page<Feed> pageFeeds = feedService.findAllFeedByCategory(categoryId, page-1, size);
-        List<Feed> feeds = pageFeeds.getContent();
-        List<Long> feedIds = feedService.isLikeFeedIds(feeds, principal);
+        Page<FeedDto.FeedListDto> pageFeeds = feedService.findAllFeedByCategory(categoryId, page-1, size);
+        List<FeedDto.FeedListDto> feeds = pageFeeds.getContent();
+//        List<Long> feedIds = feedService.isLikeFeedIds(feeds, principal);
 
         return new ResponseEntity<>(
                 new MultiResponseDto<>(
-                        feedMapper.feedsToFeedResponseDtos(feeds, feedIds), pageFeeds), HttpStatus.OK);
+                        feedMapper.feedsToFeedResponseDto(feeds, Collections.emptyList()), pageFeeds), HttpStatus.OK);
     }
 
     //카테고리 구분없이 피드 전체 조회
@@ -112,7 +116,7 @@ public class FeedController {
     @GetMapping("/weeklybest/{categoryId}")
     public ResponseEntity getWeeklyBestFeeds(@PathVariable @Min(1) @Max(13) long categoryId, @RequestParam int page, @RequestParam int size,
                                              @AuthenticationPrincipal PrincipalDto principal) {
-        Page<Feed> pageFeeds = feedService.findWeeklyBestFeeds(categoryId, page-1, size);
+        Page<Feed> pageFeeds = feedService.findAllWeeklyBestFeeds(categoryId, page-1, size);
         List<Feed> feeds = pageFeeds.getContent();
         List<Long> feedIds = feedService.isLikeFeedIds(feeds, principal);
 
@@ -128,7 +132,7 @@ public class FeedController {
                                                     @RequestParam int size,
                                                     @RequestParam String query,
                                                     @AuthenticationPrincipal PrincipalDto principal) {
-        Page<Feed> pageFeeds = feedService.findFeedByBodyAndCategory(categoryId, query, page-1, size);
+        Page<Feed> pageFeeds = feedService.findAllFeedByBodyAndCategory(categoryId, query, page-1, size);
         List<Feed> feeds = pageFeeds.getContent();
         List<Long> feedIds = feedService.isLikeFeedIds(feeds, principal);
 
@@ -144,13 +148,13 @@ public class FeedController {
                                                     @RequestParam int size,
                                                     @RequestParam String query,
                                                     @AuthenticationPrincipal PrincipalDto principal) {
-        Page<Feed> pageFeeds = feedService.findFeedByUserAndCategory(categoryId, query, page-1, size);
-        List<Feed> feeds = pageFeeds.getContent();
-        List<Long> feedIds = feedService.isLikeFeedIds(feeds, principal);
+        Page<FeedDto.FeedListDto> pageFeeds = feedService.findAllFeedByUserAndCategory(categoryId, query, page-1, size);
+        List<FeedDto.FeedListDto> feeds = pageFeeds.getContent();
+//        List<Long> feedIds = feedService.isLikeFeedIds(feeds, principal);
 
         return new ResponseEntity<>(
                 new MultiResponseDto<>(
-                        feedMapper.feedsToFeedResponseDtos(feeds, feedIds), pageFeeds), HttpStatus.OK);
+                        feedMapper.feedsToFeedResponseDto(feeds, Collections.emptyList()), pageFeeds), HttpStatus.OK);
     }
 
     //HashTagID로 검색

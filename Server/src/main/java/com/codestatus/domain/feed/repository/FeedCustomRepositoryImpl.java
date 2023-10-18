@@ -1,6 +1,10 @@
 package com.codestatus.domain.feed.repository;
 
+import com.codestatus.domain.feed.dto.FeedDto;
 import com.codestatus.domain.feed.entity.Feed;
+import com.codestatus.domain.hashTag.dto.HashTagResponseDto;
+import com.querydsl.core.types.ConstructorExpression;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -16,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.codestatus.domain.category.entity.QCategory.category1;
+import static com.codestatus.domain.comment.entity.QComment.comment;
 import static com.codestatus.domain.feed.entity.QFeed.feed;
 import static com.codestatus.domain.hashTag.entity.QFeedHashTag.feedHashTag;
 import static com.codestatus.domain.hashTag.entity.QHashTag.hashTag;
@@ -23,6 +28,7 @@ import static com.codestatus.domain.like.entity.QLike.like;
 import static com.codestatus.domain.status.entity.QStat.stat;
 import static com.codestatus.domain.status.entity.QStatus.status;
 import static com.codestatus.domain.user.entity.QUser.user;
+import static com.querydsl.core.types.Projections.list;
 
 @RequiredArgsConstructor
 @Repository
@@ -93,19 +99,25 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository{
     }
 
     @Override
-    public Page<Feed> findAllByUserAndDeleted(long categoryId, String user, Pageable pageable) {
-        List<Feed> content = getFeeds(categoryId, user, pageable);
+    public Page<FeedDto.FeedListDto> findAllByUserAndDeleted(long categoryId, String user, Pageable pageable) {
+        List<FeedDto.FeedListDto> content = getFeeds(categoryId, user, pageable);
         JPAQuery<Long> countQuery = getCount(categoryId, user);
 
         return PageableExecutionUtils.getPage(content, pageable, () ->countQuery.fetchOne());
     }
-    private List<Feed> getFeeds(long categoryId, String nickname, Pageable pageable) {
+    private List<FeedDto.FeedListDto> getFeeds(long categoryId, String nickname, Pageable pageable) {
         return jpaQueryFactory
-                .selectFrom(feed)
+                .select(getFeedListProjections())
+                .from(feed)
+                .join(feed.likes, like)
+                .join(feed.comments, comment)
+                .join(feed.feedHashTags, feedHashTag)
                 .where(
                         eqCategoryId(categoryId),
                         containsNickname(nickname),
-                        deletedFalse()
+                        deletedFalse(),
+                        likeDeletedFalse(),
+                        commentDeletedFalse()
                 ).offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -217,7 +229,7 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository{
     }
 
     @Override
-    public Page<Feed> findAll(Pageable pageable) {
+    public Page<Feed> findAllByDeletedIsFalse(Pageable pageable) {
         List<Feed> content = getFeeds(pageable);
         JPAQuery<Long> countQuery = getCount();
 
@@ -242,20 +254,30 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository{
     }
 
     @Override
-    public Page<Feed> findAllByDeletedIsFalseAndCategoryCategoryId(long categoryId, Pageable pageable) {
-        List<Feed> content = getFeeds(categoryId, pageable);
+    public Page<FeedDto.FeedListDto> findAllByDeletedIsFalseAndCategoryId(long categoryId, Pageable pageable) {
+        List<FeedDto.FeedListDto> content = getFeeds(categoryId, pageable);
         JPAQuery<Long> countQuery = getCount(categoryId);
 
         return PageableExecutionUtils.getPage(content, pageable, () ->countQuery.fetchOne());
     }
-    private List<Feed> getFeeds(long categoryId, Pageable pageable) {
+    private List<FeedDto.FeedListDto> getFeeds(long categoryId, Pageable pageable) {
         return jpaQueryFactory
-                .selectFrom(feed)
+                .select(getFeedListProjections())
+                .from(feed)
+                .innerJoin(feed.user, user)
+                .innerJoin(user.statuses, status).on(eqStatId())
+                .innerJoin(feed.category, category1)
+                .innerJoin(feed.feedHashTags, feedHashTag)
+                .leftJoin(feed.likes, like).on(likeDeletedFalse())
+                .leftJoin(feed.comments, comment).on(commentDeletedFalse())
                 .where(
                         eqCategoryId(categoryId),
                         deletedFalse()
-                ).offset(pageable.getOffset())
+                )
+                .orderBy()
+                .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .groupBy(feed.feedId)
                 .fetch();
     }
     private JPAQuery<Long> getCount(long categoryId) {
@@ -337,6 +359,28 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository{
                 );
     }
 
+    // projections constructor
+    private ConstructorExpression<FeedDto.FeedListDto> getFeedListProjections() {
+        return Projections.constructor(FeedDto.FeedListDto.class,
+                        feed.feedId,
+                        feed.body,
+                        feed.category.stat.statId,
+                        feed.createdAt,
+                        feed.modifiedAt,
+
+                        feed.user.userId,
+                        feed.user.nickname,
+                        feed.user.profileImage,
+                        status,
+
+                        like.countDistinct(),
+                        comment.countDistinct(),
+                        list(Projections.constructor(HashTagResponseDto.class,
+                                        feedHashTag.hashTag.hashTagId,
+                                        feedHashTag.hashTag.body
+                        ))
+                );
+    }
     // BooleanExpression
     private BooleanExpression inFeeds(List<Feed> feedList) {
         return !feedList.isEmpty() ? feed.in(feedList) : null;
@@ -347,6 +391,9 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository{
     }
     private BooleanExpression likeDeletedFalse() {
         return like.deleted.isFalse();
+    }
+    private BooleanExpression commentDeletedFalse() {
+        return comment.deleted.isFalse();
     }
 
     private BooleanExpression eqFeedId(long feedId) {
@@ -360,6 +407,9 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository{
     }
     private BooleanExpression eqHashTagId(long hashTagId) {
         return hashTag.hashTagId.eq(hashTagId);
+    }
+    private BooleanExpression eqStatId() {
+        return status.stat.statId.eq(feed.category.stat.statId);
     }
 
     private BooleanExpression containsBody(String body) {

@@ -62,6 +62,25 @@ public interface FeedMapper {
                         .build())
                 .collect(Collectors.toList());
     }
+    default List<FeedsResponseDto> feedsToFeedResponseDto(List<FeedDto.FeedListDto> feeds, List<Long> feedIds){
+        return feeds.stream()
+                .map(feed -> FeedsResponseDto
+                        .builder()
+                        .feedId(feed.getFeedId())
+                        .nickname(feed.getNickname())
+                        .profileImage(feed.getProfileImage())
+                        .statId(feed.getStatId().intValue())
+                        .level(feed.getStatus().getStatLevel())
+                        .body(feed.getBody())
+                        .feedHashTags(feed.getFeedHashTags())
+                        .isLike(feedIds.contains(feed.getFeedId()))
+                        .likeCount(feed.getLikeCount().intValue())
+                        .commentCount(feed.getCommentCount().intValue())
+                        .createdAt(feed.getCreatedAt())
+                        .modifiedAt(feed.getModifiedAt())
+                        .build())
+                .collect(Collectors.toList());
+    }
     default Feed feedPostDtoToFeed(Category category, FeedPostDto requestBody, User user){
         Feed feed = new Feed();
         feed.setBody(requestBody.getBody());

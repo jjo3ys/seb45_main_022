@@ -2,6 +2,7 @@ package com.codestatus.domain.feed.service;
 
 import com.codestatus.domain.comment.command.CommentCommand;
 import com.codestatus.domain.feed.command.FeedCommand;
+import com.codestatus.domain.feed.dto.FeedDto;
 import com.codestatus.domain.feed.mapper.FeedMapper;
 import com.codestatus.domain.hashTag.command.FeedHashTagCommand;
 import com.codestatus.domain.feed.entity.Feed;
@@ -70,8 +71,8 @@ public class FeedServiceImpl implements FeedService {
     //카테고리 내 피드리스트 조회
     @Override
     @Transactional(readOnly = true)
-    public Page<Feed> findAllFeedByCategory(long categoryId, int page, int size) {
-        return feedRepository.findAllByDeletedIsFalseAndCategoryCategoryId(
+    public Page<FeedDto.FeedListDto> findAllFeedByCategory(long categoryId, int page, int size) {
+        return feedRepository.findAllByDeletedIsFalseAndCategoryId(
                 categoryId,
                 getPageable(page, size)
         );
@@ -80,7 +81,7 @@ public class FeedServiceImpl implements FeedService {
     //일주일 안에 작성된 피드를 좋아요 순으로 정렬해서 조회
     @Override
     @Transactional(readOnly = true)
-    public Page<Feed> findWeeklyBestFeeds(long categoryId, int page, int size) {
+    public Page<Feed> findAllWeeklyBestFeeds(long categoryId, int page, int size) {
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(1);
         return feedRepository.findFeedsByCategoryAndCreatedAtAndSortLikes(
                 categoryId, oneWeekAgo,
@@ -90,7 +91,7 @@ public class FeedServiceImpl implements FeedService {
     //(검색기능)텍스트 받아서 해당 카테고리 내에서 해당하는 바디 가지고 있는 피드목록 조회
     @Override
     @Transactional(readOnly = true)
-    public Page<Feed> findFeedByBodyAndCategory(long categoryId, String text, int page, int size) {
+    public Page<Feed> findAllFeedByBodyAndCategory(long categoryId, String text, int page, int size) {
         return feedRepository.findAllByCategoryIdAndBodyContaining(
                 categoryId, text,
                 getPageable(page, size)
@@ -100,7 +101,7 @@ public class FeedServiceImpl implements FeedService {
     //(검색기능)텍스트 받아서 해당 카테고리 내에서 해당하는 유저가 쓴 피드목록 조회
     @Override
     @Transactional(readOnly = true)
-    public Page<Feed> findFeedByUserAndCategory(long categoryId, String text, int page, int size) {
+    public Page<FeedDto.FeedListDto> findAllFeedByUserAndCategory(long categoryId, String text, int page, int size) {
         return feedRepository.findAllByUserAndDeleted(
                 categoryId, text,
                 getPageable(page, size)
@@ -131,7 +132,7 @@ public class FeedServiceImpl implements FeedService {
     @Override
     @Transactional(readOnly = true)
     public Page<Feed> findAllFeedByDeleted(int page, int size) {
-        return feedRepository.findAll(
+        return feedRepository.findAllByDeletedIsFalse(
                 getPageable(page, size)
         );
     }

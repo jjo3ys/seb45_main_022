@@ -1,5 +1,6 @@
 package com.codestatus.domain.feed.repository;
 
+import com.codestatus.domain.feed.dto.FeedDto;
 import com.codestatus.domain.feed.entity.Feed;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +25,7 @@ public interface FeedCustomRepository {
 
     Optional<Feed> findByFeedIdWithFeedCategoryStatAndUser(long feedId);
 
-    Page<Feed> findAllByUserAndDeleted(@Param("categoryId")long categoryId, @Param("user") String user, Pageable pageable);
+    Page<FeedDto.FeedListDto> findAllByUserAndDeleted(@Param("categoryId")long categoryId, @Param("user") String user, Pageable pageable);
 
     Page<Feed> findAllByCategoryIdAndHashTagId(long categoryId, long hashTagId, Pageable pageable);
 
@@ -32,9 +33,9 @@ public interface FeedCustomRepository {
 
     Page<Feed> findAllByCategoryIdAndBodyContaining(long categoryId, String body, Pageable pageable);
 
-    Page<Feed> findAll(Pageable pageable);
+    Page<Feed> findAllByDeletedIsFalse(Pageable pageable);
 
-    Page<Feed> findAllByDeletedIsFalseAndCategoryCategoryId(long categoryId, Pageable pageable);
+    Page<FeedDto.FeedListDto> findAllByDeletedIsFalseAndCategoryId(long categoryId, Pageable pageable);
 
     List<Feed> findAllByUserId(long userId);
 
