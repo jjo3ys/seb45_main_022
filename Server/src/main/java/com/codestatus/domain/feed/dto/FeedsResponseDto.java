@@ -24,15 +24,11 @@ public class FeedsResponseDto {
 
     private String body;
 
-    private List<HashTagResponseDto> feedHashTags;
-
     private boolean isLike;
 
     private int likeCount;
 
     private int commentCount;
-
-//    private String feedImages;
 
     private LocalDateTime createdAt;
 

@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface FeedCustomRepository {
     // feed 리스트에서 user가 좋아요 한 feed의 id 만
-    List<Long> findFeedsLikedByUserInList(@Param("userId") long userId, @Param("feeds") List<Feed> feeds);
+    List<Long> findFeedsLikedByUserInList(@Param("userId") long userId, @Param("feeds") List<Long> feeds);
 
     // user data와 함께 조회
     Optional<Feed> findByFeedIdWithUser(long feedId);
@@ -27,22 +27,22 @@ public interface FeedCustomRepository {
 
     Page<FeedDto.FeedListDto> findAllByUserAndDeleted(@Param("categoryId")long categoryId, @Param("user") String user, Pageable pageable);
 
-    Page<Feed> findAllByCategoryIdAndHashTagId(long categoryId, long hashTagId, Pageable pageable);
+    Page<FeedDto.FeedListDto> findAllByCategoryIdAndHashTagId(long categoryId, long hashTagId, Pageable pageable);
 
-    Page<Feed> findAllByCategoryIdAndHashTagBodyContaining(long categoryId, String body, Pageable pageable);
+    Page<FeedDto.FeedListDto> findAllByCategoryIdAndHashTagBodyContaining(long categoryId, String body, Pageable pageable);
 
-    Page<Feed> findAllByCategoryIdAndBodyContaining(long categoryId, String body, Pageable pageable);
+    Page<FeedDto.FeedListDto> findAllByCategoryIdAndBodyContaining(long categoryId, String body, Pageable pageable);
 
-    Page<Feed> findAllByDeletedIsFalse(Pageable pageable);
+    Page<FeedDto.FeedListDto> findAllByDeletedIsFalse(Pageable pageable);
 
     Page<FeedDto.FeedListDto> findAllByDeletedIsFalseAndCategoryId(long categoryId, Pageable pageable);
 
     List<Feed> findAllByUserId(long userId);
 
-    Page<Feed> findAllByUserId(long userId, Pageable pageable);
+    Page<FeedDto.FeedListDto> findAllByUserId(long userId, Pageable pageable);
 
     // 일주일 안에 작성된 피드를 likes 의 사이즈 순으로 정렬해서 조회
-    Page<Feed> findFeedsByCategoryAndCreatedAtAndSortLikes(
+    Page<FeedDto.FeedListDto> findFeedsByCategoryAndCreatedAtAndSortLikes(
             Long categoryId,
             LocalDateTime oneWeekAgo,
             Pageable pageable

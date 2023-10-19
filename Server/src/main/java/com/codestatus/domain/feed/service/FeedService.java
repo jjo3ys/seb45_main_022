@@ -12,17 +12,17 @@ public interface FeedService {
     void createEntity(Feed feed);
     Feed findEntity(long feedId);
     Page<FeedDto.FeedListDto> findAllFeedByCategory(long categoryId, int page, int size);
-    Page<Feed> findAllWeeklyBestFeeds(long categoryId, int page, int size);
-    Page<Feed> findAllFeedByBodyAndCategory(long categoryId, String text, int page, int size);
+    Page<FeedDto.FeedListDto> findAllWeeklyBestFeeds(long categoryId, int page, int size);
+    Page<FeedDto.FeedListDto> findAllFeedByBodyAndCategory(long categoryId, String text, int page, int size);
     Page<FeedDto.FeedListDto> findAllFeedByUserAndCategory(long categoryId, String text, int page, int size);
-    Page<Feed> findFeedByHashTagAndCategory(long categoryId, long hashTagId, int page, int size);
-    Page<Feed> findFeedByHashTagBody(long categoryId, String body, int page, int size);
-    Page<Feed> findAllFeedByDeleted(int page, int size);
+    Page<FeedDto.FeedListDto> findFeedByHashTagAndCategory(long categoryId, long hashTagId, int page, int size);
+    Page<FeedDto.FeedListDto> findFeedByHashTagBody(long categoryId, String body, int page, int size);
+    Page<FeedDto.FeedListDto> findAllFeedByDeleted(int page, int size);
     void updateEntity(Feed feed, long userId);
-    Page<Feed> userPost(long userId, int page, int size);
+    Page<FeedDto.FeedListDto> userPost(long userId, int page, int size);
     void deleteEntity(long feedId, long userId);
     boolean isLikeUser(long feedId, long userId);
-    List<Long> isLikeFeedIds(List<Feed> feeds, PrincipalDto principal);
+    List<Long> isLikeFeedIds(List<FeedDto.FeedListDto> feeds, PrincipalDto principal);
     Page<Feed> findAllEntity(int page, int size);
     int getStatId(long feedId);
 }
