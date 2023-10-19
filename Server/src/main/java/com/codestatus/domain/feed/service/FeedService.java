@@ -6,7 +6,6 @@ import com.codestatus.auth.dto.PrincipalDto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
-import java.util.Set;
 
 public interface FeedService {
     void createEntity(Feed feed);
