@@ -11,6 +11,7 @@ import java.util.List;
 
 import static com.codestatus.domain.feed.entity.QFeed.feed;
 import static com.codestatus.domain.hashTag.entity.QFeedHashTag.feedHashTag;
+import static com.codestatus.domain.hashTag.entity.QHashTag.hashTag;
 import static com.codestatus.domain.user.entity.QUser.user;
 
 @RequiredArgsConstructor
@@ -34,6 +35,7 @@ public class FeedHashTagCustomRepositoryImpl implements FeedHashTagCustomReposit
     public List<FeedHashTag> findAllByFeedId(long feedId) {
         return jpaqueryFactory
                 .selectFrom(feedHashTag)
+                .innerJoin(feedHashTag.hashTag, hashTag).fetchJoin()
                 .join(feedHashTag.feed, feed)
                 .on(
                         eqFeedId(feedId)
