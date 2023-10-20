@@ -8,6 +8,22 @@ public class FeedDto {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class FeedDetailDto {
+        private Long feedId;
+        private String data;
+        private Long userId;
+        private String nickname;
+        private String profileImage;
+        private Long statId;
+        private Integer statLevel;
+        private Long likeCount;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+        private Boolean deleted;
+    }
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class FeedListDto {
         private Long feedId;
         private String body;
