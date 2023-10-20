@@ -7,8 +7,10 @@ import com.codestatus.domain.hashTag.command.FeedHashTagCommand;
 import com.codestatus.domain.feed.entity.Feed;
 import com.codestatus.domain.feed.repository.FeedRepository;
 import com.codestatus.auth.dto.PrincipalDto;
+import com.codestatus.domain.utils.pageable.CustomPageImpl;
 import com.codestatus.domain.utils.user.CheckUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -66,11 +68,13 @@ public class FeedServiceImpl implements FeedService {
     //일주일 안에 작성된 피드를 좋아요 순으로 정렬해서 조회
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "Feeds", cacheManager = "redisCacheManager")
     public Page<FeedDto.FeedListDto> findAllWeeklyBestFeeds(long categoryId, int page, int size) {
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(1);
-        return feedRepository.findFeedsByCategoryAndCreatedAtAndSortLikes(
+        Page<FeedDto.FeedListDto> feedListDto = feedRepository.findFeedsByCategoryAndCreatedAtAndSortLikes(
                 categoryId, oneWeekAgo,
                 getPageable(page, size));
+        return CustomPageImpl.of(feedListDto);
     }
 
     //(검색기능)텍스트 받아서 해당 카테고리 내에서 해당하는 바디 가지고 있는 피드목록 조회
