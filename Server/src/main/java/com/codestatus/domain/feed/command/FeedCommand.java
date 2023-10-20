@@ -1,5 +1,6 @@
 package com.codestatus.domain.feed.command;
 
+import com.codestatus.domain.feed.dto.FeedDto;
 import com.codestatus.domain.feed.entity.Feed;
 import com.codestatus.domain.feed.repository.FeedRepository;
 import com.codestatus.global.exception.BusinessLogicException;
@@ -29,8 +30,8 @@ public class FeedCommand {
     }
 
     @Transactional(readOnly = true)
-    public Feed findVerifiedFeedWithUserStatusesAndCategoryStat(long feedId) {
-        return checkFeed(feedRepository.findByFeedIdWithUserStatusesAndCategoryStat(feedId));
+    public FeedDto.FeedDetailDto findVerifiedFeedWithUserStatusesAndCategoryStat(long feedId) {
+        return checkFeedDetail(feedRepository.findByFeedIdWithUserStatusesAndCategoryStat(feedId));
     }
 
     @Transactional(readOnly = true)
@@ -52,6 +53,15 @@ public class FeedCommand {
     private Feed checkFeed(Optional<Feed> optionalFeed) {
         Feed feed = optionalFeed.orElseThrow(() -> new BusinessLogicException(ExceptionCode.FEED_NOT_FOUND));
         if (feed.isDeleted()) {
+            throw new BusinessLogicException(ExceptionCode.FEED_NOT_FOUND);
+        }
+
+        return feed;
+    }
+
+    private FeedDto.FeedDetailDto checkFeedDetail(Optional<FeedDto.FeedDetailDto> optionalFeed) {
+        FeedDto.FeedDetailDto feed = optionalFeed.orElseThrow(() -> new BusinessLogicException(ExceptionCode.FEED_NOT_FOUND));
+        if (feed.getDeleted()) {
             throw new BusinessLogicException(ExceptionCode.FEED_NOT_FOUND);
         }
 
