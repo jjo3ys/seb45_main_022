@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface FeedService {
     void createEntity(Feed feed);
-    Feed findEntity(long feedId);
+    FeedDto.FeedDetailDto findEntity(long feedId);
     Page<FeedDto.FeedListDto> findAllFeedByCategory(long categoryId, int page, int size);
     Page<FeedDto.FeedListDto> findAllWeeklyBestFeeds(long categoryId, int page, int size);
     Page<FeedDto.FeedListDto> findAllFeedByBodyAndCategory(long categoryId, String text, int page, int size);
@@ -20,7 +20,6 @@ public interface FeedService {
     void updateEntity(Feed feed, long userId);
     Page<FeedDto.FeedListDto> userPost(long userId, int page, int size);
     void deleteEntity(long feedId, long userId);
-    boolean isLikeUser(long feedId, long userId);
     List<Long> isLikeFeedIds(List<FeedDto.FeedListDto> feeds, PrincipalDto principal);
     Page<Feed> findAllEntity(int page, int size);
     int getStatId(long feedId);

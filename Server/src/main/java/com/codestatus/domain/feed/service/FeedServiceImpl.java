@@ -3,13 +3,10 @@ package com.codestatus.domain.feed.service;
 import com.codestatus.domain.comment.command.CommentCommand;
 import com.codestatus.domain.feed.command.FeedCommand;
 import com.codestatus.domain.feed.dto.FeedDto;
-import com.codestatus.domain.feed.mapper.FeedMapper;
 import com.codestatus.domain.hashTag.command.FeedHashTagCommand;
 import com.codestatus.domain.feed.entity.Feed;
 import com.codestatus.domain.feed.repository.FeedRepository;
-import com.codestatus.domain.like.likeCommand.LikeCommand;
 import com.codestatus.auth.dto.PrincipalDto;
-import com.codestatus.domain.user.mapper.UserMapper;
 import com.codestatus.domain.utils.user.CheckUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,33 +30,20 @@ import java.util.stream.Collectors;
 public class FeedServiceImpl implements FeedService {
     private final FeedRepository feedRepository;
 
-    private final FeedMapper feedMapper;
-    private final UserMapper userMapper;
-
     private final FeedCommand feedCommand;
     private final FeedHashTagCommand feedHashTagCommand;
     private final CommentCommand commentCommand;
-    private final LikeCommand likeCommand;
-
     @Override
     public void createEntity(Feed feed) {
         feedRepository.save(feed);
     }
 
     @Override
-    public Feed findEntity(long feedId) {
+    public FeedDto.FeedDetailDto findEntity(long feedId) {
         return feedCommand.findVerifiedFeedWithUserStatusesAndCategoryStat(feedId);
     }
 
-    @Override
-    public boolean isLikeUser(long feedId, long userId) {
-        return likeCommand.checkIsLikeUser(
-                feedMapper.feedIdToFeed(feedId),
-                userMapper.userIdToUser(userId)
-        );
-    }
-
-    //피드리스트에서 유저가 좋아요한 피드 아이디셋
+    //피드리스트에서 유저가 좋아요한 피드 아이디 리스트
     @Override
     public List<Long> isLikeFeedIds(List<FeedDto.FeedListDto> feeds, PrincipalDto principal) {
         if(principal == null){
