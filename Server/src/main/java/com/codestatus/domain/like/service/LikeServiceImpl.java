@@ -1,6 +1,7 @@
 package com.codestatus.domain.like.service;
 
 import com.codestatus.domain.feed.command.FeedCommand;
+import com.codestatus.domain.feed.mapper.FeedMapper;
 import com.codestatus.domain.like.repository.LikeRepository;
 import com.codestatus.domain.feed.entity.Feed;
 import com.codestatus.domain.like.entity.Like;
@@ -23,10 +24,19 @@ public class LikeServiceImpl implements LikeService {
     @Value("${exp.like-exp}")
     private int likeExp;
 
+    private final FeedMapper feedMapper;
     private final UserMapper userMapper;
+
     private final LevelCommand levelCommand;
     private final FeedCommand feedCommand;
     private final LikeRepository likeRepository;
+    @Override
+    public boolean isLikeUser(long feedId, long userId) {
+        return likeRepository.existsByFeedFeedAndUserAndDeletedIsFalse(
+                feedMapper.feedIdToFeed(feedId),
+                userMapper.userIdToUser(userId)
+        );
+    }
 
     @Override
     public void likeFeed(long feedId, long userId) {
@@ -58,11 +68,5 @@ public class LikeServiceImpl implements LikeService {
         Like like = optionalLike.orElseThrow(() -> new BusinessLogicException(ExceptionCode.LIKE_NOT_FOUND));
         like.setDeleted(true);
         likeRepository.save(like);
-    }
-
-    @Override
-    public long feedLikeCount(long feedId) {
-        Feed feed = feedCommand.findVerifiedFeed(feedId);
-        return likeRepository.countAllByFeedAndDeletedIsFalse(feed);
     }
 }
