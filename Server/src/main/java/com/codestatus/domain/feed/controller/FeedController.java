@@ -59,13 +59,12 @@ public class FeedController {
     @GetMapping("/{feedId}")
     public ResponseEntity getFeed(@PathVariable("feedId") long feedId,
                                             @AuthenticationPrincipal PrincipalDto principalDto) {
-        Feed feed = feedService.findEntity(feedId);
+        FeedDto.FeedDetailDto feed = feedService.findEntity(feedId);
         List<FeedHashTag> feedHashTags = hashTagService.getFeedHashTagsByFeedId(feedId);
-        long likeCount = likeService.feedLikeCount(feedId);
-        boolean isLike = feedService.isLikeUser(feedId, principalDto.getId());
+        boolean isLike = likeService.isLikeUser(feedId, principalDto.getId());
 
         return new ResponseEntity<>(
-                feedMapper.feedToFeedResponseDto(feed, isLike, feedHashTags, likeCount), HttpStatus.OK);
+                feedMapper.feedToFeedResponseDto(feed, isLike, feedHashTags), HttpStatus.OK);
     }
 
     //userId로 피드 리스트
