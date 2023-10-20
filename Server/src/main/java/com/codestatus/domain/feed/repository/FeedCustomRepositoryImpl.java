@@ -3,6 +3,7 @@ package com.codestatus.domain.feed.repository;
 import com.codestatus.domain.feed.dto.FeedDto;
 import com.codestatus.domain.feed.entity.Feed;
 
+import com.codestatus.domain.hashTag.dto.HashTagResponseDto;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -60,13 +61,14 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository{
     }
 
     @Override
-    public Optional<Feed> findByFeedIdWithUserStatusesAndCategoryStat(long feedId) {
+    public Optional<FeedDto.FeedDetailDto> findByFeedIdWithUserStatusesAndCategoryStat(long feedId) {
         return Optional.ofNullable(
                 jpaQueryFactory
-                        .selectFrom(feed)
-                        .join(feed.user, user).fetchJoin()
-                        .join(user.statuses, status).fetchJoin()
-                        .join(feed.category, category1).fetchJoin()
+                        .select(getFeedDetailDto())
+                        .from(feed)
+                        .innerJoin(feed.user, user)
+                        .innerJoin(user.statuses, status).on(eqStatId())
+                        .leftJoin(feed.likes, like).on(likeDeletedFalse())
                         .where(eqFeedId(feedId))
                         .fetchOne()
         );
@@ -112,7 +114,6 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository{
                 .innerJoin(user.statuses, status).on(eqStatId())
                 .leftJoin(feed.likes, like).on(likeDeletedFalse())
                 .leftJoin(feed.comments, comment).on(commentDeletedFalse())
-                .join(feed.feedHashTags, feedHashTag)
                 .where(
                         eqCategoryId(categoryId),
                         containsNickname(nickname),
@@ -399,6 +400,23 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository{
                         comment.countDistinct()
                 );
     }
+
+    private ConstructorExpression<FeedDto.FeedDetailDto> getFeedDetailDto() {
+        return Projections.constructor(FeedDto.FeedDetailDto.class,
+                feed.feedId,
+                feed.data,
+                user.userId,
+                user.nickname,
+                user.profileImage,
+                feed.category.stat.statId,
+                status.statLevel,
+                like.countDistinct(),
+                feed.createdAt,
+                feed.modifiedAt,
+                feed.deleted
+            );
+    }
+
     // BooleanExpression
     private BooleanExpression inFeeds(List<Long> feedList) {
         return !feedList.isEmpty() ? feed.feedId.in(feedList) : null;

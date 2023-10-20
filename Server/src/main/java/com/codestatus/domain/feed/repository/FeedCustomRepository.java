@@ -18,7 +18,7 @@ public interface FeedCustomRepository {
     Optional<Feed> findByFeedIdWithUser(long feedId);
 
     // user data, user의 statuses, category의 stat과 함께 조회
-    Optional<Feed> findByFeedIdWithUserStatusesAndCategoryStat(long feedId);
+    Optional<FeedDto.FeedDetailDto> findByFeedIdWithUserStatusesAndCategoryStat(long feedId);
 
     Optional<Feed> findByFeedIdWithFeedCategoryStat(long feedId);
 
