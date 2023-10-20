@@ -9,19 +9,18 @@ import com.codestatus.domain.user.entity.User;
 import org.mapstruct.Mapper;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface FeedMapper {
 
-    default FeedResponseDto feedToFeedResponseDto(Feed feed, boolean isLike, List<FeedHashTag> feedHashTags, long likeCount){
+    default FeedResponseDto feedToFeedResponseDto(FeedDto.FeedDetailDto feed, boolean isLike, List<FeedHashTag> feedHashTags){
         return FeedResponseDto.builder()
                 .feedId(feed.getFeedId())
-                .nickname(feed.getUser().getNickname())
-                .profileImage(feed.getUser().getProfileImage())
-                .statId(feed.getUser().getStatuses().get(feed.getCategory().getStat().getStatId().intValue() - 1).getStat().getStatId().intValue())
-                .level(feed.getUser().getStatuses().get(feed.getCategory().getStat().getStatId().intValue() - 1).getStatLevel())
+                .nickname(feed.getNickname())
+                .profileImage(feed.getProfileImage())
+                .statId(feed.getStatId().intValue())
+                .level(feed.getStatLevel())
                 .data(feed.getData())
                 .feedHashTags(feedHashTags.stream()
                         .map(feedHashTag -> HashTagResponseDto.builder()
@@ -30,31 +29,10 @@ public interface FeedMapper {
                                 .build())
                         .collect(Collectors.toList()))
                 .isLike(isLike)
-                .likeCount((int) likeCount)
+                .likeCount(feed.getLikeCount().intValue())
                 .createdAt(feed.getCreatedAt())
                 .modifiedAt(feed.getModifiedAt())
                 .build();
-    }
-
-    default List<FeedsResponseDto> feedsToFeedResponseDtos(List<Feed> feeds, List<Long> feedIds){
-        return feeds.stream()
-                .map(feed -> FeedsResponseDto
-                        .builder()
-                        .feedId(feed.getFeedId())
-                        .nickname(feed.getUser().getNickname())
-                        .profileImage(feed.getUser().getProfileImage())
-                        .statId(feed.getUser().getStatuses().get(feed.getCategory().getStat().getStatId().intValue() - 1).getStat().getStatId().intValue())
-                        .level(feed.getUser().getStatuses().get(feed.getCategory().getStat().getStatId().intValue() - 1).getStatLevel())
-                        .body(feed.getBody())
-                        .isLike(feedIds.contains(feed.getFeedId()))
-                        .likeCount((int)feed.getLikes().stream().filter(like -> !like.getDeleted()).count())
-                        .commentCount((int) feed.getComments().stream()
-                                .filter(comment -> !comment.isDeleted())
-                                .count())
-                        .createdAt(feed.getCreatedAt())
-                        .modifiedAt(feed.getModifiedAt())
-                        .build())
-                .collect(Collectors.toList());
     }
     default List<FeedsResponseDto> feedsToFeedResponseDto(List<FeedDto.FeedListDto> feeds, List<Long> feedIds){
         return feeds.stream()
