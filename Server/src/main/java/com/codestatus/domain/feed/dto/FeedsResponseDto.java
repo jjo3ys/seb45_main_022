@@ -1,12 +1,10 @@
 package com.codestatus.domain.feed.dto;
 
-import com.codestatus.domain.hashTag.dto.HashTagResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Builder

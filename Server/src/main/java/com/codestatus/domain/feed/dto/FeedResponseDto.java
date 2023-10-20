@@ -1,6 +1,5 @@
 package com.codestatus.domain.feed.dto;
 
-import com.codestatus.domain.comment.dto.CommentResponseDto;
 import com.codestatus.domain.hashTag.dto.HashTagResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,8 +30,6 @@ public class FeedResponseDto {
     private boolean isLike;
 
     private int likeCount;
-
-//    private List<CommentResponseDto> comments;
 
     private LocalDateTime createdAt;
 
