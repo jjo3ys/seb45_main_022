@@ -23,8 +23,7 @@ public class EmailController {
 
     @PostMapping("/join")
     public ResponseEntity sendJoinCode(@RequestBody EmailDto emailDto) {
-        Email code = emailService.sendJoinCode(emailMapper.EmailDtoToEmail(emailDto));
-        EmailDto.Response response = emailMapper.EmailToEmailDto(code);
-        return ResponseEntity.ok().body(response);
+        emailService.sendJoinCode(emailMapper.EmailDtoToEmail(emailDto));
+        return ResponseEntity.ok().build();
     }
 }

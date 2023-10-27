@@ -11,10 +11,4 @@ public class EmailMapper {
         email.setAddress(emailDto.getAddress());
         return email;
     }
-
-    public EmailDto.Response EmailToEmailDto(Email code) {
-        EmailDto.Response response = new EmailDto.Response();
-        response.setCode(code.getCode());
-        return response;
-    }
 }
