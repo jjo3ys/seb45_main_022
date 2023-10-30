@@ -1,6 +1,5 @@
 package com.codestatus.module.mail.controller;
 
-import com.codestatus.module.mail.entity.Email;
 import com.codestatus.module.mail.dto.EmailDto;
 import com.codestatus.module.mail.mapper.EmailMapper;
 import com.codestatus.module.mail.service.EmailService;

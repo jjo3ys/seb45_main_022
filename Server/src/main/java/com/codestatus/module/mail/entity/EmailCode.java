@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.RedisHash;
 @Getter
 @Setter
 @RedisHash(value = "emailCode", timeToLive = 180)
-public class Email {
+public class EmailCode {
     @Id
     private String address;
     private String code;

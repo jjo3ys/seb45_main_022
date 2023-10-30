@@ -1,6 +1,6 @@
 package com.codestatus.module.mail.service;
 
-import com.codestatus.module.mail.entity.Email;
+import com.codestatus.module.mail.entity.EmailCode;
 import com.codestatus.domain.utils.email.CustomMailSender;
 import com.codestatus.module.redis.repository.EmailCodeRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +14,12 @@ public class EmailService {
     private final CustomMailSender customMailSender;
     private final EmailCodeRepository emailCodeRepository;
 
-    public Email sendJoinCode(Email email) {
+    public EmailCode sendJoinCode(EmailCode emailCode) {
         String code = randomCodeGenerator(); // 인증번호 생성
-        customMailSender.sendAuthenticationCode(code, email.getAddress());
-        email.setCode(code); // 인증번호 저장
-        emailCodeRepository.save(email);
-        return email;
+        customMailSender.sendAuthenticationCode(code, emailCode.getAddress());
+        emailCode.setCode(code); // 인증번호 저장
+        emailCodeRepository.save(emailCode);
+        return emailCode;
     }
 
     // 문자열 랜덤 생성

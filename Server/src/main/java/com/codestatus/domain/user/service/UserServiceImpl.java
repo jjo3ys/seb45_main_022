@@ -6,6 +6,7 @@ import com.codestatus.domain.hashTag.command.FeedHashTagCommand;
 import com.codestatus.domain.status.command.StatusCommand;
 import com.codestatus.domain.user.command.UserCommand;
 import com.codestatus.auth.utils.CustomAuthorityUtils;
+import com.codestatus.global.certification.command.CertificationCommand;
 import com.codestatus.module.aws.FileStorageService;
 import com.codestatus.global.exception.BusinessLogicException;
 import com.codestatus.global.exception.ExceptionCode;
@@ -33,6 +34,7 @@ public class UserServiceImpl implements UserService {
     private final FeedHashTagCommand feedHashTagCommand;
     private final CommentCommand commentCommand;
     private final StatusCommand statusCommand;
+    private final CertificationCommand certificationCommand;
 
     private final CustomAuthorityUtils customAuthorityUtils;
     private final PasswordEncoder passwordEncoder;
@@ -50,6 +52,7 @@ public class UserServiceImpl implements UserService {
     // 유저 생성
     @Override
     public User createEntity(User user) {
+        certificationCommand.checkCertificated(user.getEmail());
         Optional<User> optionalUser = repository.findByEmail(user.getEmail()); // 가입 요청이 온 email 로 user table 검색
 
         if (optionalUser.isPresent()) { // optional 객체의 값이 있는 경우
