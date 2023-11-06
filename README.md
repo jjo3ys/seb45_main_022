@@ -27,56 +27,15 @@
 
 
 ## 🛠️ Technical Skills
-
-<p>
-
-<img src="https://img.shields.io/badge/Vite-05122A?style=flat&logo=Vite"/>
-<img src="https://img.shields.io/badge/React-05122A?style=flat&logo=React"/>
-<img src="https://img.shields.io/badge/TypeScript-05122A?style=flat&logo=TypeScript"/>
-<img src="https://img.shields.io/badge/ReactQuery-05122A?style=flat&logo=ReactQuery"/>
-<img src="https://img.shields.io/badge/ReactRouter-05122A?style=flat&logo=ReactRouter"/>
-<img src="https://img.shields.io/badge/-Tailwind CSS-05122A?style=flat&logo=Tailwind CSS"/>
-
-<br>
-<img src="https://img.shields.io/badge/-Java-05122A?style=flat&logo=Java"/>
+<img src="https://img.shields.io/badge/-Java-05122A?style=flat&logo=java"/>
 <img src="https://img.shields.io/badge/-Springboot-05122A?style=flat&logo=Springboot"/>
 <img src="https://img.shields.io/badge/-Docker-05122A?style=flat&logo=Docker"/>
+<img src="https://img.shields.io/badge/-aws-05122A?style=flat&logo=amazonaws"/>
+
+<br>
+<img src="https://img.shields.io/badge/-redis-05122A?style=flat&logo=redis"/>
 <img src="https://img.shields.io/badge/-mysql-05122A?style=flat&logo=mysql"/>
-<img src="https://img.shields.io/badge/-amazonaws-05122A?style=flat&logo=amazonaws"/>
-<img src="https://img.shields.io/badge/-JSON Web Tokens-05122A?style=flat&logo=JSONwebtokens"/>
-
-<br>
-<img src="https://img.shields.io/badge/-git-05122A?style=flat&logo=git"/>
-<img src="https://img.shields.io/badge/-github-05122A?style=flat&logo=github"/>
-<img src="https://img.shields.io/badge/-Figma-05122A?style=flat&logo=Figma"/>
-<img src="https://img.shields.io/badge/-Canva-05122A?style=flat&logo=Canva"/>
-<img src="https://img.shields.io/badge/-Notion-05122A?style=flat&logo=Notion"/>
-<img src="https://img.shields.io/badge/-Discord-05122A?style=flat&logo=Discord"/>
-<img src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=flat-square&logo=Visual Studio Code&logoColor=white"/>
-
-</p>
-
-<br>
-
-## 🏛️ Architecture
-
-![Stat Us 아키텍처](https://github.com/widrns15/seb45_main_022/assets/85780501/b9467e8e-1a89-47f6-81cd-d4c8e40065a8)
-
-<br>
-
-## ✨ Commit Convention
-
-```
-✨ feat: 새로운 기능 추가
-🐛 fix: 오류 또는 버그 수정
-📝 docs: `readme.md`와 같은 문서 관련 변경사항
-🎨 style: 코드 스타일 변화
-💄 design: CSS 등 사용자 UI 디자인 변화
-♻️ refactor: 기능과 관련없는 코드의 리팩토링
-🥽 test: 테스트를 추가하거나 수정했을 때
-⚙️ chore: build와 관련된 부분, 패키지 매니저 설정 등
-```
-
+<img src="https://img.shields.io/badge/-querydsl-05122A?style=flat&logo=mysql"/>
 <br>
 
 ## 🌊 Git Flow
@@ -116,33 +75,6 @@
 
 - 노션으로 개발자 테스트 체크리스트, 사용자 요구사항 정의서,<br>ErrorCode List 와 같은 공동 문서를 작성했고, API 사양서를 공유하였습니다.
 
-<br>
-<br>
-
-
-> ### ⚔️ 3. 피그마(Figma)
-
-<img width="1713" alt="스크린샷 2023-09-21 오후 10 57 45" src="https://github.com/codestates-seb/seb45_main_022/assets/85780501/4e18419c-7aa6-4b2f-a645-aac3235b49c3">
-
-<br>
-<br>
-
-- 피그마에서 FE 팀원들이 모여 디자인 공동 작업 & 역할 분배를 진행했습니다.
-- 추가로 백엔드 분들에게 디자인에 대해서 설명하고 피드백을 받으며 진행했습니다.
-
-<br>
-<br>
-
-> ### ⚔️ 4. Canva
-
-<img width="1728" alt="스크린샷 2023-09-21 오후 11 05 07" src="https://github.com/codestates-seb/seb45_main_022/assets/85780501/95693cf6-cc39-4cdb-8c10-33059f4f7146">
-
-<br>
-<br>
-
-- Canva에서 모든 팀원이 기술 발표 자료 PPT와 서비스 메뉴얼을 공동작업하며 준비했습니다.
-
-<br>
 
 
 ## ✨ [서비스 메뉴얼](https://github.com/codestates-seb/seb45_main_022/files/12685723/Code.Status.2.pdf)
@@ -191,3 +123,55 @@
 |5. 좋아요 & 댓글|6. 검색 기능|
 |---|---|
 |![ezgif com-video-to-gif (14)](https://github.com/codestates-seb/seb45_main_022/assets/85780501/cf318a4f-4017-4128-83f6-36dbff539ed8)|![ezgif com-video-to-gif (15)](https://github.com/codestates-seb/seb45_main_022/assets/85780501/59bc2f6e-c154-4650-9645-9afa6c005451)|
+
+## ✨ 구현 내용
+- db 스키마, 폴더 구조 설계
+- jwt + OAuth2 인증 및 인가 구현
+- like, comment crud 기능, 게시물 신고기능 구현
+- querydsl, redis cache 적용
+- redis 활용한 인증 번호 입력 방식의 회원가입 절차 구현
+
+## ✨ 주요 기능
+### redis 활용한 인증 번호 입력 방식의 회원 가입 절차 구현
+![img.png](readme%20img/certification_process.png)
+
+직접 이메일로 회원가입 하는 경우 인증을 위해
+  인증번호 입력 방식의 회원가입 절차를 구현하였습니다.
+>1. 사용자는 이메일을 입력한 뒤 인증 버튼을 누르게 되면
+>2. 서버에서 무작위 숫자로 구성된 인증번호를 생성하고, 입력한 이메일로 인증번호를 발송합니다.
+>3. 서버에선 생성된 인증번호를 value, 이메일을 key값으로 하여 redis에 유효기간을 설정하여 저장합니다.
+>4. 사용자가 입력한 인증번호가 맞는 경우 redis에 이메일만 유효기간을 설정하여 저장합니다.
+>5. 서버는 redis에 이메일이 유효한지 확인한 뒤 회원가입 절차를 계속합니다.
+
+### 일반 로그인, OAuth2 로그인 인증 절차 구현
+![img.png](readme%20img/authentication_process.png)
+
+직접 가입한 유저가 로그인 할 때, OAuth2로 가입한 유저가 로그인 할 때 jwt 토큰을 발급되게 했습니다.
+>spring security에서 각각 진행되는 절차가 다르기 때문에<br>
+직접 가입한 유저는 authentication filter에서, OAuth2로 가입한 유저는 authentication success handler를 통해<br>
+jwt를 발급받아 로그인 절차를 진행하게 하였습니다.<br>
+access 토큰은 response로, refresh 토큰은 쿠키에 저장하였고,<br>
+access 토큰 만료시 refresh 토큰을 검사하여 유효시 재발급되게 하였습니다.
+
+### 경험치 like 시스템 구현
+|||
+|---|-|
+|![img.png](readme%20img/like_process.png)|![img.png](readme%20img/dislike_process.png)|
+
+like를 받을 때 피드 주인은 해당 스탯의 경험치가 오르게 구현했습니다.
+> like를 취소하거나 다시 좋아요를 하더라도 스탯의 경험치에는 관여가 안되게 하기 위해<br>
+like table에 deleted 컬럼을 추가하였습니다.<br>
+게시글에 처음 like를 하게 된다면, 데이터를 추가하고 취소한다면 deleted 값을 true로 바꿔<br>
+게시글 리스트 조회시 보여지게 되는 like count에 집계가 안되도록 하였습니다.<br>
+
+### redis cache 적용
+
+유저가 가장 자주 접근할 것 같은 api에 redis caching을 적용했습니다.
+>게시판 종류 별 주간 베스트, 게시판 종류 별 첫 페이지를 redis caching을 적용하여<br>
+평균적으로 0.78초가 걸렸던 호출 속도를 0.03초대로 줄일 수 있었습니다.
+
+ ## ✨ 후기
+
+여러 프로젝트를 진행하면서 소통의 중요성은 알고 있었지만, git의 칸반보드나, <br>
+pr을 사용한 코드 리뷰 등 체계적인 소통을 처음 진행해 보면서 여태 했던 소통은 정말 말로만 했던 소통 뿐이라고 생각했습니다.<br>
+pr에서 팀원의 코드를 리뷰해 피드백을 주거나 팀원에 피드백을 받으면서 다른 사람의 생각을 코드로 볼 수 있었고, 이해 해봤습니다.
