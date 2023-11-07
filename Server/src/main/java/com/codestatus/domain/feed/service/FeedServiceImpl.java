@@ -68,7 +68,7 @@ public class FeedServiceImpl implements FeedService {
     //일주일 안에 작성된 피드를 좋아요 순으로 정렬해서 조회
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "Feeds", cacheManager = "redisCacheManager")
+    @Cacheable(value = "WeeklyBestFeeds", key = "'KeyIs' + #categoryId + #page + #size", cacheManager = "redisCacheManager")
     public Page<FeedDto.FeedListDto> findAllWeeklyBestFeeds(long categoryId, int page, int size) {
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(1);
         Page<FeedDto.FeedListDto> feedListDto = feedRepository.findFeedsByCategoryAndCreatedAtAndSortLikes(
