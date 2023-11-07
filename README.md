@@ -133,7 +133,7 @@
 - redis 활용한 인증 번호 입력 방식의 회원가입 절차 구현
 
 ## ✨ 주요 기능
-### redis 활용한 인증 번호 입력 방식의 회원 가입 절차 구현
+### 1. redis 활용한 인증 번호 입력 방식의 회원 가입 절차 구현
 ![img.png](readme%20img/certification_process.png)
 
 직접 이메일로 회원가입 하는 경우 인증을 위해
@@ -144,7 +144,7 @@
 >4. 사용자가 입력한 인증번호가 맞는 경우 redis에 이메일만 유효기간을 설정하여 저장합니다.
 >5. 서버는 redis에 이메일이 유효한지 확인한 뒤 회원가입 절차를 계속합니다.
 
-### 일반 로그인, OAuth2 로그인 인증 절차 구현
+### 2. 일반 로그인, OAuth2 로그인 인증 절차 구현
 ![img.png](readme%20img/authentication_process.png)
 
 직접 가입한 유저가 로그인 할 때, OAuth2로 가입한 유저가 로그인 할 때 jwt 토큰을 발급되게 했습니다.
@@ -154,7 +154,7 @@ jwt를 발급받아 로그인 절차를 진행하게 하였습니다.<br>
 access 토큰은 response로, refresh 토큰은 쿠키에 저장하였고,<br>
 access 토큰 만료시 refresh 토큰을 검사하여 유효시 재발급되게 하였습니다.
 
-### 경험치 like 시스템 구현
+### 3. 경험치 like 시스템 구현
 |||
 |---|-|
 |![img.png](readme%20img/like_process.png)|![img.png](readme%20img/dislike_process.png)|
@@ -165,7 +165,7 @@ like table에 deleted 컬럼을 추가하였습니다.<br>
 게시글에 처음 like를 하게 된다면, 데이터를 추가하고 취소한다면 deleted 값을 true로 바꿔<br>
 게시글 리스트 조회시 보여지게 되는 like count에 집계가 안되도록 하였습니다.<br>
 
-### redis cache 적용
+### 4. redis cache 적용
 
 유저가 가장 자주 접근할 것 같은 api에 redis caching을 적용했습니다.
 >게시판 종류 별 주간 베스트, 게시판 종류 별 첫 페이지를 redis caching을 적용하여<br>
