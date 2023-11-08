@@ -28,15 +28,14 @@
 
 ## 🛠️ Stacks
 
-<img src="https://img.shields.io/badge/-Java-05122A?style=flat&logo=java"/>
-<img src="https://img.shields.io/badge/-Springboot-05122A?style=flat&logo=Springboot"/>
-<img src="https://img.shields.io/badge/-Docker-05122A?style=flat&logo=Docker"/>
-<img src="https://img.shields.io/badge/-aws-05122A?style=flat&logo=amazonaws"/>
-
+![](https://img.shields.io/badge/-Java-05122A?style=flat&logo=java)
+![](https://img.shields.io/badge/-Springboot-05122A?style=flat&logo=Springboot)
+![](https://img.shields.io/badge/-Docker-05122A?style=flat&logo=Docker)
+![](https://img.shields.io/badge/-aws-05122A?style=flat&logo=amazonaws)
 <br>
-<img src="https://img.shields.io/badge/-redis-05122A?style=flat&logo=redis"/>
-<img src="https://img.shields.io/badge/-mysql-05122A?style=flat&logo=mysql"/>
-<img src="https://img.shields.io/badge/-querydsl-05122A?style=flat&logo=mysql"/>
+![](https://img.shields.io/badge/-redis-05122A?style=flat&logo=redis)
+![](https://img.shields.io/badge/-mysql-05122A?style=flat&logo=mysql)
+![](https://img.shields.io/badge/-querydsl-05122A?style=flat&logo=mysql)
 <br>
 
 ## 🌊 Git Flow
