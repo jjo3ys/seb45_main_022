@@ -1,8 +1,8 @@
 package com.codestatus.domain.level.command;
 
-import com.codestatus.domain.user.entity.User;
+import com.codestatus.domain.status.entity.Status;
+import com.codestatus.domain.status.repository.StatusRepository;
 import com.codestatus.domain.utils.exp.repository.ExpTableRepository;
-import com.codestatus.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,19 +11,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class LevelCommand {
-    private final UserRepository userRepository;
+    private final StatusRepository statusRepository;
     private final ExpTableRepository expTableRepository;
 
-    public void gainExp(User user, int exp, int statId) {
-        user.getStatuses().get(statId-1).setStatExp(
-                user.getStatuses().get(statId-1).getStatExp() + exp
+    public void gainExp(Status status, int exp) {
+        status.setStatExp(
+                status.getStatExp() + exp
         );
-        levelUpCheck(user, statId-1);
+        levelUpCheck(status);
     }
 
-    private void levelUpCheck(User user, int chosenStat) { // chooseStat: 1(str), 2(dex), 3(int), 4(charm), 5(vitality)
-        int currentLevel = user.getStatuses().get(chosenStat).getStatLevel(); // 현재 레벨
-        int currentExp = user.getStatuses().get(chosenStat).getStatExp(); // 현재 경험치
+    private void levelUpCheck(Status status) { // chooseStat: 1(str), 2(dex), 3(int), 4(charm), 5(vitality)
+        int currentLevel = status.getStatLevel(); // 현재 레벨
+        int currentExp = status.getStatExp(); // 현재 경험치
         int requiredExp = expTableRepository.findById((long) currentLevel).get().getRequired(); // 필요 경험치
         int maxLevel = 100; // 최대 레벨
 
@@ -33,15 +33,15 @@ public class LevelCommand {
 
         if (currentExp >= requiredExp) { // 현재 경험치가 필요 경험치보다 많다면 레벨업
             currentLevel += 1; // 레벨업
-            user.getStatuses().get(chosenStat).setStatLevel(currentLevel); // 레벨 저장
+            status.setStatLevel(currentLevel); // 레벨 저장
             currentExp -= requiredExp; // 현재 경험치에서 필요 경험치 차감
-            user.getStatuses().get(chosenStat).setStatExp(currentExp); // 경험치 차감
+            status.setStatExp(currentExp); // 경험치 차감
         }
 
         // 현재 레벨에서 다음 레벨까지 필요한 경험치 = 다음 레벨까지 필요한 경험치 - 현재 레벨까지 필요한 경험치
         int nextLevelRequiredExp = expTableRepository.findById((long) (currentLevel)).get().getRequired() - currentExp;
-        user.getStatuses().get(chosenStat).setRequiredExp(nextLevelRequiredExp); // 다음 레벨까지 필요한 경험치 저장
+        status.setRequiredExp(nextLevelRequiredExp); // 다음 레벨까지 필요한 경험치 저장
 
-        userRepository.save(user); // 유저 정보 저장
+        statusRepository.save(status); // 유저 정보 저장
     }
 }

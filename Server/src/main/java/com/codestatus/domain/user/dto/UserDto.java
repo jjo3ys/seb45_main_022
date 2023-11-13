@@ -1,9 +1,9 @@
 package com.codestatus.domain.user.dto;
 
 import com.codestatus.domain.status.dto.StatusResponse;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.codestatus.domain.status.entity.Status;
+import com.codestatus.domain.user.entity.User;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -68,5 +68,13 @@ public class UserDto {
         private String profileImage;
         private List<StatusResponse> statuses;
         private String createDate;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class StatStatus {
+        private User.UserStatus userStatus;
+        private Status status;
     }
 }

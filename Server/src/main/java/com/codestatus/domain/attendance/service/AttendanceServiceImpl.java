@@ -4,6 +4,7 @@ import com.codestatus.domain.attendance.entity.Attendance;
 import com.codestatus.domain.attendance.repository.AttendanceRepository;
 import com.codestatus.domain.level.command.LevelCommand;
 import com.codestatus.domain.user.command.UserCommand;
+import com.codestatus.domain.user.dto.UserDto;
 import com.codestatus.domain.user.entity.User;
 import com.codestatus.domain.user.repository.UserRepository;
 import com.codestatus.global.exception.BusinessLogicException;
@@ -23,23 +24,19 @@ import java.util.Optional;
 public class AttendanceServiceImpl implements AttendanceService {
     @Value("${exp.attendance-exp}")
     private int attendanceExp;
-    private final UserRepository userRepository;
     private final AttendanceRepository attendanceRepository;
     private final LevelCommand levelCommand;
     private final UserCommand userCommand;
 
     @Override
     public void checkAttendance(Attendance attendance) {
-        User user = userCommand.findVerifiedUser(attendance.getUserId()); // 유저 검색(유저가 없거나, DELETE 상태인 유저인 경우 예외)
-
+        UserDto.StatStatus status = userCommand.findVerifiedUser(attendance); // 유저 검색(유저가 없거나, DELETE 상태인 유저인 경우 예외)
         try {
             attendanceRepository.save(attendance); // attendance 테이블에 user_id, stat_id 저장 try
         } catch (DataIntegrityViolationException e) { // 테이블에 user_id(unique)가 이미 존재 한다면 예외 발생
             throw new BusinessLogicException(ExceptionCode.USER_ALREADY_CHECKED_ATTENDANCE);
         }
-        levelCommand.gainExp(user, attendanceExp, attendance.getStatId());
-
-        userRepository.save(user); // 유저 정보 저장
+        levelCommand.gainExp(status.getStatus(), attendanceExp);
     }
 
     @Override
