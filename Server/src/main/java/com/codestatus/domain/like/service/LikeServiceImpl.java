@@ -1,6 +1,7 @@
 package com.codestatus.domain.like.service;
 
 import com.codestatus.domain.feed.command.FeedCommand;
+import com.codestatus.domain.feed.dto.FeedDto;
 import com.codestatus.domain.feed.mapper.FeedMapper;
 import com.codestatus.domain.like.repository.LikeRepository;
 import com.codestatus.domain.feed.entity.Feed;
@@ -40,11 +41,11 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public void likeFeed(long feedId, long userId) {
-        Feed feed = feedCommand.findVerifiedFeedWithFeedCategoryStatAndUser(feedId);
+        FeedDto.FeedForLikeDto feedForLikeDto = feedCommand.findVerifiedFeedWithFeedCategoryStatAndUser(feedId);
         User user = userMapper.userIdToUser(userId);
-        if (feed.getUser().getUserId() == userId) throw new BusinessLogicException(ExceptionCode.LIKE_BAD_REQUEST);
+        if (feedForLikeDto.getUserId() == userId) throw new BusinessLogicException(ExceptionCode.LIKE_BAD_REQUEST);
 
-        Optional<Like> optionalLike = likeRepository.findLikeByFeedAndUser(feed, user);
+        Optional<Like> optionalLike = likeRepository.findLikeByFeedFeedIdAndUserUserId(feedForLikeDto.getFeed().getFeedId(), userId);
         Like like;
 
         if (optionalLike.isPresent()) {
@@ -52,10 +53,10 @@ public class LikeServiceImpl implements LikeService {
             like.setDeleted(false);
         } else {
             like = new Like();
-            like.setFeed(feed);
+            like.setFeed(feedForLikeDto.getFeed());
             like.setUser(user);
 
-            levelCommand.gainExp(feed.getUser(), likeExp, feed.getCategory().getStat().getStatId().intValue());
+            levelCommand.gainExp(feedForLikeDto.getStatus(), likeExp);
         }
         likeRepository.save(like);
     }

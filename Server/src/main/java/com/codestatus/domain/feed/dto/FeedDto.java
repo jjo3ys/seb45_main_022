@@ -1,5 +1,8 @@
 package com.codestatus.domain.feed.dto;
 
+import com.codestatus.domain.feed.entity.Feed;
+import com.codestatus.domain.status.entity.Status;
+import com.codestatus.domain.user.entity.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -38,5 +41,17 @@ public class FeedDto {
 
         private Long likeCount;
         private Long commentCount;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class FeedForLikeDto {
+        private Feed feed;
+
+        private Long statId;
+
+        private Long userId;
+        private Status status;
     }
 }

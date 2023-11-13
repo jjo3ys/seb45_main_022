@@ -87,13 +87,14 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository{
     }
 
     @Override
-    public Optional<Feed> findByFeedIdWithFeedCategoryStatAndUser(long feedId) {
+    public Optional<FeedDto.FeedForLikeDto> findByFeedIdWithFeedCategoryStatAndUser(long feedId) {
         return Optional.ofNullable(
                 jpaQueryFactory
-                        .selectFrom(feed)
-                        .join(feed.category, category1).fetchJoin()
-                        .join(category1.stat, stat).fetchJoin()
-                        .join(feed.user, user).fetchJoin()
+                        .select(getFeedForLikeDto())
+                        .from(feed)
+                        .innerJoin(feed.category.stat, stat)
+                        .innerJoin(feed.user, user)
+                        .innerJoin(user.statuses, status).on(eqStatId())
                         .where(eqFeedId(feedId))
                         .fetchOne()
         );
@@ -414,6 +415,15 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository{
                 feed.createdAt,
                 feed.modifiedAt,
                 feed.deleted
+            );
+    }
+
+    private ConstructorExpression<FeedDto.FeedForLikeDto> getFeedForLikeDto() {
+        return Projections.constructor(FeedDto.FeedForLikeDto.class,
+                feed,
+                stat.statId,
+                user.userId,
+                status
             );
     }
 

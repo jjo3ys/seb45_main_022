@@ -22,7 +22,7 @@ public interface FeedCustomRepository {
 
     Optional<Feed> findByFeedIdWithFeedCategoryStat(long feedId);
 
-    Optional<Feed> findByFeedIdWithFeedCategoryStatAndUser(long feedId);
+    Optional<FeedDto.FeedForLikeDto> findByFeedIdWithFeedCategoryStatAndUser(long feedId);
 
     Page<FeedDto.FeedListDto> findAllByUserAndDeleted(@Param("categoryId")long categoryId, @Param("user") String user, Pageable pageable);
 

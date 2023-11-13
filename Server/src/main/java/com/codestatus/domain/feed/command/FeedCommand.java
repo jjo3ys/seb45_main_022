@@ -40,8 +40,8 @@ public class FeedCommand {
     }
 
     @Transactional(readOnly = true)
-    public Feed findVerifiedFeedWithFeedCategoryStatAndUser(long feedId) {
-        return checkFeed(feedRepository.findByFeedIdWithFeedCategoryStatAndUser(feedId));
+    public FeedDto.FeedForLikeDto findVerifiedFeedWithFeedCategoryStatAndUser(long feedId) {
+        return checkFeedForLikeDto(feedRepository.findByFeedIdWithFeedCategoryStatAndUser(feedId));
     }
 
     public void deleteFeedAll(long userId) {
@@ -57,6 +57,16 @@ public class FeedCommand {
         }
 
         return feed;
+    }
+
+    private FeedDto.FeedForLikeDto checkFeedForLikeDto(Optional<FeedDto.FeedForLikeDto> optionalFeed) {
+        FeedDto.FeedForLikeDto feedForLikeDto = optionalFeed.orElseThrow(() -> new BusinessLogicException(ExceptionCode.FEED_NOT_FOUND));
+        Feed feed = feedForLikeDto.getFeed();
+        if (feed.isDeleted()) {
+            throw new BusinessLogicException(ExceptionCode.FEED_NOT_FOUND);
+        }
+
+        return feedForLikeDto;
     }
 
     private FeedDto.FeedDetailDto checkFeedDetail(Optional<FeedDto.FeedDetailDto> optionalFeed) {
