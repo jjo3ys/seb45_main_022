@@ -1,8 +1,8 @@
-package com.codestatus.domain.image.controller;
+package com.codestatus.global.image.controller;
 
-import com.codestatus.domain.image.dto.ImageResponseDto;
-import com.codestatus.domain.image.mapper.ImageMapper;
-import com.codestatus.domain.image.service.ImageService;
+import com.codestatus.global.image.dto.ImageResponseDto;
+import com.codestatus.global.image.mapper.ImageMapper;
+import com.codestatus.global.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

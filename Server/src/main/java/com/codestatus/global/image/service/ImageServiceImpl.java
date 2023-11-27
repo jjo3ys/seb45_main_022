@@ -1,4 +1,4 @@
-package com.codestatus.domain.image.service;
+package com.codestatus.global.image.service;
 
 import com.codestatus.module.aws.FileStorageService;
 import lombok.RequiredArgsConstructor;

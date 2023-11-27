@@ -1,4 +1,4 @@
-package com.codestatus.domain.image.dto;
+package com.codestatus.global.image.dto;
 
 import lombok.Getter;
 import lombok.Setter;

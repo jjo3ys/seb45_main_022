@@ -1,4 +1,4 @@
-package com.codestatus.domain.image.service;
+package com.codestatus.global.image.service;
 
 import org.springframework.web.multipart.MultipartFile;
 

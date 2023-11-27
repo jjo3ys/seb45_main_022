@@ -1,6 +1,6 @@
-package com.codestatus.domain.image.mapper;
+package com.codestatus.global.image.mapper;
 
-import com.codestatus.domain.image.dto.ImageResponseDto;
+import com.codestatus.global.image.dto.ImageResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component
