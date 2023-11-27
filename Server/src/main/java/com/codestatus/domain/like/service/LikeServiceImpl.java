@@ -6,13 +6,14 @@ import com.codestatus.domain.feed.mapper.FeedMapper;
 import com.codestatus.domain.like.repository.LikeRepository;
 import com.codestatus.domain.feed.entity.Feed;
 import com.codestatus.domain.like.entity.Like;
-import com.codestatus.domain.level.command.LevelCommand;
 import com.codestatus.domain.user.entity.User;
 import com.codestatus.domain.user.mapper.UserMapper;
+import com.codestatus.global.event.GotExpEvent;
 import com.codestatus.global.exception.BusinessLogicException;
 import com.codestatus.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,10 +26,11 @@ public class LikeServiceImpl implements LikeService {
     @Value("${exp.like-exp}")
     private int likeExp;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     private final FeedMapper feedMapper;
     private final UserMapper userMapper;
 
-    private final LevelCommand levelCommand;
     private final FeedCommand feedCommand;
     private final LikeRepository likeRepository;
     @Override
@@ -55,8 +57,7 @@ public class LikeServiceImpl implements LikeService {
             like = new Like();
             like.setFeed(feedForLikeDto.getFeed());
             like.setUser(user);
-
-            levelCommand.gainExp(feedForLikeDto.getStatus(), likeExp);
+            eventPublisher.publishEvent(new GotExpEvent(feedForLikeDto.getStatus(), likeExp));
         }
         likeRepository.save(like);
     }

@@ -2,15 +2,14 @@ package com.codestatus.domain.attendance.service;
 
 import com.codestatus.domain.attendance.entity.Attendance;
 import com.codestatus.domain.attendance.repository.AttendanceRepository;
-import com.codestatus.domain.level.command.LevelCommand;
 import com.codestatus.domain.user.command.UserCommand;
 import com.codestatus.domain.user.dto.UserDto;
-import com.codestatus.domain.user.entity.User;
-import com.codestatus.domain.user.repository.UserRepository;
+import com.codestatus.global.event.GotExpEvent;
 import com.codestatus.global.exception.BusinessLogicException;
 import com.codestatus.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,10 @@ import java.util.Optional;
 public class AttendanceServiceImpl implements AttendanceService {
     @Value("${exp.attendance-exp}")
     private int attendanceExp;
+
+    private final ApplicationEventPublisher eventPublisher;
+
     private final AttendanceRepository attendanceRepository;
-    private final LevelCommand levelCommand;
     private final UserCommand userCommand;
 
     @Override
@@ -36,7 +37,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         } catch (DataIntegrityViolationException e) { // 테이블에 user_id(unique)가 이미 존재 한다면 예외 발생
             throw new BusinessLogicException(ExceptionCode.USER_ALREADY_CHECKED_ATTENDANCE);
         }
-        levelCommand.gainExp(status.getStatus(), attendanceExp);
+        eventPublisher.publishEvent(new GotExpEvent(status.getStatus(), attendanceExp));
     }
 
     @Override
