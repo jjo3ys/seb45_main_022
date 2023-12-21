@@ -128,6 +128,7 @@
 - db 스키마, 폴더 구조 설계
 - jwt + OAuth2 인증 및 인가 구현
 - like, comment crud 기능, 게시물 신고기능 구현
+- 경험치 이벤트 리스너 비동기로 구현
 - querydsl, redis cache 적용
 - redis 활용한 인증 번호 입력 방식의 회원가입 절차 구현
 
@@ -159,6 +160,10 @@ access 토큰 만료시 refresh 토큰을 검사하여 유효시 재발급되게
 |![img.png](readme%20img/like_process.png)|![img.png](readme%20img/dislike_process.png)|
 
 like를 받을 때 피드 주인은 해당 스탯의 경험치가 오르게 구현했습니다.
+> 이벤트 리스너를 비동기로 처리하여 출석 체크를 했을 때, <br>
+다른 유저가 좋아요 버튼을 처음 눌렀을 때 <br>
+경험치가 오르도록 하였습니다.
+
 > like를 취소하거나 다시 좋아요를 하더라도 스탯의 경험치에는 관여가 안되게 하기 위해<br>
 like table에 deleted 컬럼을 추가하였습니다.<br>
 게시글에 처음 like를 하게 된다면, 데이터를 추가하고 취소한다면 deleted 값을 true로 바꿔<br>
