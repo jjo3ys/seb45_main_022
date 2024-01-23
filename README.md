@@ -40,7 +40,7 @@
 
 ## 🏛️ Architecture
 
-![](./readme%20img/stat&us.drawio.png)
+![](./readmeImg/stat&us.drawio.png)
 
 ## 🌊 Git Flow
 
