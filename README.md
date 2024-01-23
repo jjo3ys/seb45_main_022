@@ -38,6 +38,10 @@
 ![](https://img.shields.io/badge/-querydsl-05122A?style=flat&logo=mysql)
 <br>
 
+## 🏛️ Architecture
+
+![](./readme%20img/stat&us.drawio.png)
+
 ## 🌊 Git Flow
 
 ![06](https://github.com/codestates-seb/seb45_main_022/assets/85780501/5f7e3f9d-3906-4b26-bf53-dd9b05744314)
